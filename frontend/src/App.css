@@ -1,184 +1,290 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-
-.hero {
+/* ---------- Fondo ---------- */
+.login-page {
   position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  background-color: var(--verde-fondo);
+  background-image:
+    radial-gradient(ellipse 30% 55% at 50% 5%, #ffffff 0%, transparent 70%),
+    radial-gradient(ellipse 28% 40% at 8% 20%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 35% at 22% 95%, rgba(130, 225, 170, 0.9) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 40% at 85% 55%, rgba(255, 255, 255, 0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 35% at 70% 100%, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
 }
 
-#center {
+/* ---------- Tarjeta de login (efecto vidrio) ---------- */
+.login-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 570px;
+  padding: 48px 52px 52px;
+  border-radius: 48px;
+  background: rgba(240, 245, 242, 0.75);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 25px 60px rgba(22, 90, 50, 0.15);
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
 }
 
-#next-steps {
+.login-logo {
+  width: 220px;
+  align-self: center;
+  margin-bottom: 28px;
+}
+
+.login-card h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.subtitulo {
+  text-align: center;
+  color: var(--texto-suave);
+  margin: 10px 0 34px;
+  font-size: 1rem;
+}
+
+.login-card label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #3d4b43;
+  margin-bottom: 8px;
+}
+
+/* ---------- Campos ---------- */
+.campo {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  align-items: center;
+  gap: 12px;
+  height: 62px;
+  padding: 0 18px;
+  margin-bottom: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e2e8e4;
+  border-radius: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.campo:focus-within {
+  border-color: var(--verde-boton);
+  box-shadow: 0 0 0 4px rgba(22, 128, 60, 0.15);
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+.campo-icono {
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  color: #4a5750;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.campo input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: var(--texto);
 }
 
-.ticks {
-  position: relative;
+.campo input::placeholder {
+  color: #7b8780;
+}
+
+.ojo {
+  display: flex;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #4a5750;
+}
+
+.olvido {
+  align-self: flex-end;
+  margin-top: -10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--verde-boton);
+  text-decoration: none;
+}
+
+.olvido:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Botón ---------- */
+.btn-login {
+  margin-top: 28px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: none;
+  border-radius: 20px;
+  background: var(--verde-boton);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(22, 128, 60, 0.3);
+  transition: transform 0.15s, filter 0.2s;
+}
+
+.btn-login:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+/* ---------- Tarjetas decorativas ---------- */
+.widget {
+  position: absolute;
+  z-index: 1;
+  background: rgba(240, 247, 243, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 12px 30px rgba(22, 90, 50, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px 22px;
+}
+
+.widget-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5750;
+}
+
+.widget-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(155, 227, 180, 0.6);
+  color: var(--verde-boton);
+}
+
+.widget-valor {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin: 12px 0 6px;
+}
+
+.widget-valor small {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.grafica {
   width: 100%;
+  height: 50px;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+.widget-humedad {
+  top: 21%;
+  left: 15%;
+  width: 240px;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+.widget-temperatura {
+  top: 26%;
+  right: 15%;
+  width: 225px;
+}
+
+.widget-sensores {
+  bottom: 18%;
+  left: 11%;
+  width: 335px;
+  filter: blur(1.2px);
+}
+
+.sensores-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #4a5750;
+}
+
+.sensores-fila strong {
+  font-size: 1.2rem;
+  color: var(--texto);
+}
+
+.barras {
+  display: flex;
+  gap: 6px;
+}
+
+.barras span {
+  flex: 1;
+  height: 8px;
+  border-radius: 99px;
+  background: #d9e6de;
+}
+
+.barras span.activa {
+  background: var(--verde-boton);
+}
+
+.widget-parcela {
+  bottom: 21%;
+  right: 12%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px 14px 16px;
+  filter: blur(1.2px);
+}
+
+.parcela-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--verde-boton);
+}
+
+.widget-parcela strong {
+  font-size: 1rem;
+}
+
+.widget-parcela p {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1100px) {
+  .widget {
+    display: none;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+}
+
+@media (max-width: 520px) {
+  .login-card {
+    padding: 32px 22px 36px;
+    border-radius: 32px;
   }
 }
