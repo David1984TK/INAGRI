@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import logo from './assets/logo-inagri.png'
+import RecuperarPassword from './RecuperarPassword'
 
 /* ---------- Iconos ---------- */
 const IconoCorreo = () => (
@@ -69,6 +70,7 @@ function App() {
   const [correo, setCorreo] = useState('')
   const [password, setPassword] = useState('')
   const [verPassword, setVerPassword] = useState(false)
+  const [vista, setVista] = useState('login')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -118,7 +120,9 @@ function App() {
         </div>
       </div>
 
-      {/* Tarjeta de login */}
+      {vista === 'recuperar' ? (
+        <RecuperarPassword onVolver={() => setVista('login')} />
+      ) : (
       <form className="login-card" onSubmit={handleSubmit}>
         <img src={logo} alt="INAGRI Monitoreo Agrícola" className="login-logo" />
 
@@ -159,12 +163,15 @@ function App() {
           </button>
         </div>
 
-        <a href="#" className="olvido">¿Olvidaste tu contraseña?</a>
+        <button type="button" className="olvido" onClick={() => setVista('recuperar')}>
+          ¿Olvidaste tu contraseña?
+        </button>
 
         <button type="submit" className="btn-login">
           Iniciar sesión <IconoFlecha />
         </button>
       </form>
+      )}
     </main>
   )
 }
