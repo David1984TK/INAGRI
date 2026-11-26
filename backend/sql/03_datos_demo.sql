@@ -47,7 +47,7 @@ INSERT INTO sensores (id_sensor, id_parcela, descripcion) VALUES
 SELECT setval(pg_get_serial_sequence('sensores', 'id_sensor'), (SELECT max(id_sensor) FROM sensores));
 
 INSERT INTO cultivos (nombre, tipo, duracion_dias, humedad_min, humedad_max, temp_min, temp_max) VALUES
-    ('Maíz',           'Grano',      120, 35, 60, 18, 32),
+    ('Maíz',           'Grano',      120, 30, 60, 18, 32),
     ('Frijol',         'Leguminosa',  90, 40, 65, 15, 28),
     ('Jitomate',       'Hortaliza',  100, 50, 75, 18, 30),
     ('Sorgo',          'Grano',      110, 30, 55, 20, 35),

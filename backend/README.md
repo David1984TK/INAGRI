@@ -68,6 +68,14 @@ Hace falta Docker Desktop. En `.env` pon una contraseña en `DB_PASSWORD`, otra 
 
    Queda en `http://localhost:3001`. Ejemplos: `GET /productores/1/parcelas`, `GET /sensores/3/lecturas?horas=24`.
 
+4. En otra terminal (también con `.venv` activo), encender el simulador de sensores. Manda una lectura por sensor cada 5 minutos a `POST /lecturas`, como lo harían los sensores reales. Sin él, todos los sensores salen "sin señal", porque `cargarLecturas.py` solo deja lecturas de cada hora.
+
+   ```bash
+   python scripts/simularSensores.py
+   ```
+
+   El sensor 4 no manda lecturas a propósito, para que la Parcela Sur muestre un sensor sin señal como en los bocetos. Con `--todos` se incluye.
+
 Para apagar las bases: `docker compose down`. Para borrar los datos de Postgres y volver a correr los scripts SQL: `docker compose down -v`.
 
 Importante: mientras `DYNAMODB_ENDPOINT_URL` tenga valor, los scripts usan DynamoDB Local. Para cargar datos en la tabla real de AWS, deja esa variable vacía.
@@ -86,11 +94,21 @@ Importante: mientras `DYNAMODB_ENDPOINT_URL` tenga valor, los scripts usan Dynam
 | POST | `/productores` (también crea su cuenta) | `catalogo/crearProductor` | RDS |
 | PUT | `/productores/{id}` | `catalogo/actualizarProductor` | RDS |
 | DELETE | `/productores/{id}` | `catalogo/eliminarProductor` | RDS |
-| GET | `/productores/{id}/parcelas` | `catalogo/obtenerParcelasProductor` | RDS |
+| GET | `/productores/{id}/parcelas` (Mis parcelas) | `catalogo/obtenerParcelasProductor` | RDS + DynamoDB |
 | GET | `/parcelas` y `/parcelas/{id}` | `catalogo/obtenerParcelas` | RDS |
+| GET | `/parcelas/{id}/sensores` (Detalle de parcela) | `catalogo/obtenerSensoresParcela` | RDS + DynamoDB |
 | POST | `/parcelas` | `catalogo/crearParcela` | RDS |
 | PUT | `/parcelas/{id}` | `catalogo/actualizarParcela` | RDS |
 | DELETE | `/parcelas/{id}` | `catalogo/eliminarParcela` | RDS |
+
+## Mis parcelas y Detalle de parcela
+
+Estas dos Lambdas juntan las dos bases: de RDS sacan las parcelas, el ciclo en curso, el rango ideal del cultivo y los sensores, y de DynamoDB la última lectura de cada sensor (una consulta con `Limit=1` por sensor). La lógica está en `common/monitoreo.py`:
+
+- Un sensor está `en_linea` si mandó una lectura en los últimos 15 minutos (`MINUTOS_SIN_SENAL`), `sin_senal` si no, e `inactivo` si se dio de baja.
+- La parcela usa el promedio de la última lectura de sus sensores en línea.
+- La parcela queda en `requiere_atencion` si la humedad o la temperatura salen del rango ideal del cultivo, o si tiene sensores sin señal. Si no hay ningún sensor en línea queda en `sin_datos`, y si todo está bien en `optima`.
+- En AWS, el rol de estas dos Lambdas necesita permiso `dynamodb:Query` sobre la tabla de lecturas, además de leer el secreto de RDS.
 
 ## Inicio de sesión
 

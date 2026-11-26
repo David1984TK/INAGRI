@@ -42,6 +42,7 @@ RUTAS = [
     ("GET", "/parcelas", "lambdas.catalogo.obtenerParcelas"),
     ("POST", "/parcelas", "lambdas.catalogo.crearParcela"),
     ("GET", "/parcelas/{id}", "lambdas.catalogo.obtenerParcelas"),
+    ("GET", "/parcelas/{id}/sensores", "lambdas.catalogo.obtenerSensoresParcela"),
     ("PUT", "/parcelas/{id}", "lambdas.catalogo.actualizarParcela"),
     ("DELETE", "/parcelas/{id}", "lambdas.catalogo.eliminarParcela"),
 ]

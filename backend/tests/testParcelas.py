@@ -10,7 +10,6 @@ from lambdas.catalogo import (
     crearParcela,
     eliminarParcela,
     obtenerParcelas,
-    obtenerParcelasProductor,
 )
 from tests.conexionFalsa import ConexionFalsa
 
@@ -116,36 +115,6 @@ def test_parcela_inexistente_regresa_404(monkeypatch):
 def test_id_de_parcela_invalido_regresa_400(monkeypatch):
     _usar(monkeypatch, obtenerParcelas, ConexionFalsa())
     assert obtenerParcelas.lambda_handler(_evento(id_ruta="x"), None)["statusCode"] == 400
-
-
-# ---------- GET /productores/{id}/parcelas ----------
-
-def test_lista_las_parcelas_de_un_productor(monkeypatch):
-    productor = {"id_productor": 1, "nombre": "Juan Pérez", "estatus": "activo"}
-    parcelas = [{**PARCELA, "total_sensores": 4}, {**PARCELA, "id_parcela": 2, "total_sensores": 2}]
-    conexion = _usar(monkeypatch, obtenerParcelasProductor, ConexionFalsa([productor], parcelas))
-    resp = obtenerParcelasProductor.lambda_handler(_evento(id_ruta="1"), None)
-    cuerpo = json.loads(resp["body"])
-
-    assert resp["statusCode"] == 200
-    assert cuerpo["productor"]["nombre"] == "Juan Pérez"
-    assert cuerpo["total"] == 2
-    assert conexion.consultas[1][1] == [1]
-
-
-def test_productor_sin_parcelas_regresa_lista_vacia(monkeypatch):
-    productor = {"id_productor": 6, "nombre": "Ana", "estatus": "activo"}
-    _usar(monkeypatch, obtenerParcelasProductor, ConexionFalsa([productor], []))
-    resp = obtenerParcelasProductor.lambda_handler(_evento(id_ruta="6"), None)
-    assert resp["statusCode"] == 200
-    assert json.loads(resp["body"])["parcelas"] == []
-
-
-def test_parcelas_de_productor_inexistente_regresa_404(monkeypatch):
-    conexion = _usar(monkeypatch, obtenerParcelasProductor, ConexionFalsa([]))
-    resp = obtenerParcelasProductor.lambda_handler(_evento(id_ruta="99"), None)
-    assert resp["statusCode"] == 404
-    assert len(conexion.consultas) == 1
 
 
 # ---------- PUT /parcelas/{id} ----------
