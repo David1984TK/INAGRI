@@ -1,7 +1,8 @@
 """PUT /productores/{id}: modifica los datos de un productor.
 
-Se puede mandar cualquiera de estos campos: nombre, telefono, correo, estatus.
-Para dar de baja sin borrar, mandar {"estatus": "inactivo"}.
+Se puede mandar cualquiera de estos campos: nombre, correo, telefono, comunidad, estatus.
+Para dar de baja sin borrar, mandar {"estatus": "inactivo"}: ya no podrá iniciar sesión.
+Si cambia el nombre o el correo, también se actualiza su cuenta de acceso (usuarios).
 """
 import logging
 
@@ -16,7 +17,8 @@ from common.validaciones import leer_cuerpo
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-COLUMNAS = "id_productor, nombre, telefono, correo, estatus, fecha_alta"
+COLUMNAS = "id_productor, nombre, telefono, correo, comunidad, estatus, fecha_alta"
+CAMPOS_DE_LA_CUENTA = ("nombre", "correo")
 
 
 def lambda_handler(evento, contexto):
@@ -39,14 +41,22 @@ def lambda_handler(evento, contexto):
         + ", ".join(f"{c} = %s" for c in columnas)
         + f" WHERE id_productor = %s RETURNING {COLUMNAS}"
     )
+    columnas_cuenta = [c for c in columnas if c in CAMPOS_DE_LA_CUENTA]
 
     try:
         conexion = obtener_conexion()
         with conexion, conexion.cursor() as cursor:
             cursor.execute(sql, [cambios[c] for c in columnas] + [id_productor])
             fila = cursor.fetchone()
+            if fila is not None and columnas_cuenta:
+                cursor.execute(
+                    "UPDATE usuarios SET "
+                    + ", ".join(f"{c} = %s" for c in columnas_cuenta)
+                    + " WHERE id_productor = %s",
+                    [cambios[c] for c in columnas_cuenta] + [id_productor],
+                )
     except errors.UniqueViolation:
-        return error(409, "Ya existe un productor con ese correo.")
+        return error(409, "Ya existe una cuenta con ese correo.")
     except psycopg2.Error:
         logger.exception("Error de RDS al actualizar el productor")
         return error(500, "No se pudo actualizar el productor.")

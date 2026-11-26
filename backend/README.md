@@ -45,7 +45,7 @@ pytest
 
 ## Correr todo en local (sin gastar en AWS)
 
-Hace falta Docker Desktop. En `.env` pon una contraseña en `DB_PASSWORD` y otra en `DB_ADMIN_PASSWORD`.
+Hace falta Docker Desktop. En `.env` pon una contraseña en `DB_PASSWORD`, otra en `DB_ADMIN_PASSWORD` y una llave de al menos 32 caracteres en `TOKEN_SECRET`.
 
 1. Levantar Postgres (en lugar de RDS) y DynamoDB Local. La primera vez se crean las tablas, el usuario limitado y los datos de demostración (`sql/`).
 
@@ -76,12 +76,14 @@ Importante: mientras `DYNAMODB_ENDPOINT_URL` tenga valor, los scripts usan Dynam
 
 | Método | Ruta | Lambda | Base |
 |---|---|---|---|
+| POST | `/auth/login` | `auth/iniciarSesion` | RDS |
+| PUT | `/auth/contrasena` | `auth/cambiarContrasena` | RDS |
 | POST | `/lecturas` | `lecturas/crearLectura` | DynamoDB |
 | GET | `/sensores/{id}/lecturas?horas=24` | `lecturas/obtenerLecturas` | DynamoDB |
 | PUT | `/sensores/{id}/lecturas/{fechaHora}` | `lecturas/actualizarLectura` | DynamoDB |
 | DELETE | `/sensores/{id}/lecturas/{fechaHora}` | `lecturas/eliminarLectura` | DynamoDB |
 | GET | `/productores` y `/productores/{id}` | `catalogo/obtenerProductores` | RDS |
-| POST | `/productores` | `catalogo/crearProductor` | RDS |
+| POST | `/productores` (también crea su cuenta) | `catalogo/crearProductor` | RDS |
 | PUT | `/productores/{id}` | `catalogo/actualizarProductor` | RDS |
 | DELETE | `/productores/{id}` | `catalogo/eliminarProductor` | RDS |
 | GET | `/productores/{id}/parcelas` | `catalogo/obtenerParcelasProductor` | RDS |
@@ -90,11 +92,29 @@ Importante: mientras `DYNAMODB_ENDPOINT_URL` tenga valor, los scripts usan Dynam
 | PUT | `/parcelas/{id}` | `catalogo/actualizarParcela` | RDS |
 | DELETE | `/parcelas/{id}` | `catalogo/eliminarParcela` | RDS |
 
+## Inicio de sesión
+
+- `POST /auth/login` con `{"correo", "contrasena"}` regresa `token` y `usuario` (con `rol`, `id_productor` y `debe_cambiar_contrasena`).
+- El frontend guarda el token y lo manda en cada petición: `Authorization: Bearer <token>`. Dura 8 horas.
+- Si `debe_cambiar_contrasena` es `true`, el frontend debe pedir la contraseña nueva con `PUT /auth/contrasena`.
+- Las contraseñas se guardan cifradas con scrypt (`common/seguridad.py`). La llave de los tokens va en `TOKEN_SECRET` (local) o en Secrets Manager (`TOKEN_SECRET_NAME`, en AWS).
+- Al dar de alta un productor (`POST /productores`) se crea su cuenta con una contraseña temporal, que se regresa una sola vez en `acceso.contrasena_temporal`.
+
 ## Base relacional (RDS)
 
 - `sql/01_tablas.sql`: productores, parcelas, sensores, cultivos, ciclos_siembra y usuarios, con llaves foráneas.
 - `sql/02_usuario.sql`: usuario `inagri_app`, que solo puede SELECT, INSERT, UPDATE y DELETE. La contraseña se pasa con `-v clave_app='...'`.
-- `sql/03_datos_demo.sql`: 5 productores, 10 parcelas, 10 sensores (los mismos id que usa `cargarLecturas.py`), cultivos y ciclos.
+- `sql/03_datos_demo.sql`: 5 productores, 10 parcelas, 10 sensores (los mismos id que usa `cargarLecturas.py`), cultivos con su rango ideal, ciclos y cuentas de acceso.
+
+Cuentas de demostración (contraseña de todas: `Inagri2026`):
+
+| Correo | Rol | Nota |
+|---|---|---|
+| `admin@inagri.com` | administrador | |
+| `juan.perez@ejemplo.com` | productor | Parcela Sur y Parcela Río |
+| `maria.lopez@ejemplo.com` | productor | Parcela Norte |
+| `rosa.hernandez@ejemplo.com` | productor | debe cambiar su contraseña al entrar |
+| `luis.garcia@ejemplo.com` | productor | dado de baja, no puede entrar |
 
 En RDS se corren igual, con el usuario administrador:
 

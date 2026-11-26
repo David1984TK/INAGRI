@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS productores (
     nombre        VARCHAR(100) NOT NULL,
     telefono      VARCHAR(20),
     correo        VARCHAR(100) UNIQUE,
+    comunidad     VARCHAR(100),
     estatus       VARCHAR(10)  NOT NULL DEFAULT 'activo'
                   CHECK (estatus IN ('activo', 'inactivo')),
     fecha_alta    TIMESTAMPTZ  NOT NULL DEFAULT now()
@@ -42,7 +43,14 @@ CREATE TABLE IF NOT EXISTS cultivos (
     id_cultivo    INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre        VARCHAR(60)  NOT NULL UNIQUE,
     tipo          VARCHAR(40),
-    duracion_dias INTEGER CHECK (duracion_dias > 0)
+    duracion_dias INTEGER CHECK (duracion_dias > 0),
+    -- Rango ideal del cultivo. Sirve para marcar la alerta "Requiere atención" en Mis parcelas.
+    humedad_min   NUMERIC(5, 2) CHECK (humedad_min BETWEEN 0 AND 100),
+    humedad_max   NUMERIC(5, 2) CHECK (humedad_max BETWEEN 0 AND 100),
+    temp_min      NUMERIC(5, 2) CHECK (temp_min BETWEEN -40 AND 85),
+    temp_max      NUMERIC(5, 2) CHECK (temp_max BETWEEN -40 AND 85),
+    CHECK (humedad_min < humedad_max),
+    CHECK (temp_min < temp_max)
 );
 
 CREATE TABLE IF NOT EXISTS ciclos_siembra (
@@ -58,11 +66,18 @@ CREATE TABLE IF NOT EXISTS ciclos_siembra (
 
 CREATE INDEX IF NOT EXISTS idx_ciclos_parcela ON ciclos_siembra (id_parcela);
 
+-- Cuentas de acceso. Se inicia sesión con el correo.
+-- Un usuario con rol productor está ligado a su productor; si se elimina el productor,
+-- se elimina también su cuenta.
 CREATE TABLE IF NOT EXISTS usuarios (
-    id_usuario      INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nombre_usuario  VARCHAR(50)  NOT NULL UNIQUE,
-    hash_contrasena VARCHAR(255) NOT NULL,
-    rol             VARCHAR(15)  NOT NULL CHECK (rol IN ('administrador', 'productor')),
-    id_productor    INTEGER REFERENCES productores (id_productor) ON DELETE SET NULL,
-    fecha_alta      TIMESTAMPTZ  NOT NULL DEFAULT now()
+    id_usuario              INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre                  VARCHAR(100) NOT NULL,
+    correo                  VARCHAR(100) NOT NULL UNIQUE,
+    hash_contrasena         VARCHAR(255) NOT NULL,
+    rol                     VARCHAR(15)  NOT NULL CHECK (rol IN ('administrador', 'productor')),
+    id_productor            INTEGER UNIQUE REFERENCES productores (id_productor) ON DELETE CASCADE,
+    debe_cambiar_contrasena BOOLEAN      NOT NULL DEFAULT FALSE,
+    fecha_alta              TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    ultimo_acceso           TIMESTAMPTZ,
+    CHECK ((rol = 'productor') = (id_productor IS NOT NULL))
 );

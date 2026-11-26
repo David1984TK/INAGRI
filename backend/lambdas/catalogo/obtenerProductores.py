@@ -15,7 +15,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 SQL_BASE = """
-    SELECT pr.id_productor, pr.nombre, pr.telefono, pr.correo, pr.estatus, pr.fecha_alta,
+    SELECT pr.id_productor, pr.nombre, pr.telefono, pr.correo, pr.comunidad, pr.estatus, pr.fecha_alta,
            COUNT(pa.id_parcela) AS total_parcelas
     FROM productores pr
     LEFT JOIN parcelas pa ON pa.id_productor = pr.id_productor

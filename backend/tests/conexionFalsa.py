@@ -12,7 +12,8 @@ class CursorFalso:
 
     def execute(self, sql, valores=None):
         self.conexion.consultas.append((" ".join(sql.split()), list(valores or [])))
-        if self.conexion.error:
+        numero = len(self.conexion.consultas)
+        if self.conexion.error and (self.conexion.error_en is None or numero == self.conexion.error_en):
             raise self.conexion.error
         self._filas = self.conexion.resultados.pop(0) if self.conexion.resultados else []
 
@@ -30,10 +31,15 @@ class CursorFalso:
 
 
 class ConexionFalsa:
-    def __init__(self, *resultados, error=None):
-        """resultados: una lista de filas (diccionarios) por cada execute, en orden."""
+    def __init__(self, *resultados, error=None, error_en=None):
+        """resultados: una lista de filas (diccionarios) por cada execute, en orden.
+
+        error: excepción que lanza execute. error_en: número de execute (1, 2, ...) en el
+        que falla; si no se indica, falla en todos.
+        """
         self.resultados = [list(r) for r in resultados]
         self.error = error
+        self.error_en = error_en
         self.consultas = []
         self.confirmada = False
         self.revertida = False

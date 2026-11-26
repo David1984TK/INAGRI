@@ -27,6 +27,8 @@ from common.respuestas import ENCABEZADOS  # noqa: E402
 
 # (método, ruta como en API Gateway, módulo de la Lambda)
 RUTAS = [
+    ("POST", "/auth/login", "lambdas.auth.iniciarSesion"),
+    ("PUT", "/auth/contrasena", "lambdas.auth.cambiarContrasena"),
     ("POST", "/lecturas", "lambdas.lecturas.crearLectura"),
     ("GET", "/sensores/{id}/lecturas", "lambdas.lecturas.obtenerLecturas"),
     ("PUT", "/sensores/{id}/lecturas/{fechaHora}", "lambdas.lecturas.actualizarLectura"),
@@ -61,7 +63,7 @@ def buscar_ruta(metodo, camino):
     return None
 
 
-def armar_evento(metodo, ruta, camino, parametros, consulta, cuerpo):
+def armar_evento(metodo, ruta, camino, parametros, consulta, cuerpo, encabezados=None):
     """Arma un evento igual al que manda API Gateway con integración proxy."""
     return {
         "httpMethod": metodo,
@@ -69,7 +71,7 @@ def armar_evento(metodo, ruta, camino, parametros, consulta, cuerpo):
         "path": camino,
         "pathParameters": parametros or None,
         "queryStringParameters": dict(parse_qsl(consulta)) or None,
-        "headers": {"Content-Type": "application/json"},
+        "headers": encabezados or {"Content-Type": "application/json"},
         "body": cuerpo,
         "isBase64Encoded": False,
     }
@@ -95,7 +97,9 @@ class Manejador(BaseHTTPRequestHandler):
         ruta, modulo, parametros = encontrada
         largo = int(self.headers.get("Content-Length") or 0)
         cuerpo = self.rfile.read(largo).decode("utf-8") if largo else None
-        evento = armar_evento(self.command, ruta, partes.path, parametros, partes.query, cuerpo)
+        evento = armar_evento(
+            self.command, ruta, partes.path, parametros, partes.query, cuerpo, dict(self.headers)
+        )
 
         lambda_handler = importlib.import_module(modulo).lambda_handler
         resultado = lambda_handler(evento, None)

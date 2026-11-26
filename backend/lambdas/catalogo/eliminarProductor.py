@@ -2,6 +2,7 @@
 
 Si el productor todavía tiene parcelas responde 409: primero hay que eliminar
 o reasignar sus parcelas (la llave foránea lo impide).
+Al eliminarlo se elimina también su cuenta de acceso (ON DELETE CASCADE en usuarios).
 """
 import logging
 

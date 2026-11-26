@@ -116,13 +116,15 @@ def validar_campos(datos, campos, obligatorios, parcial):
     return valores, None
 
 
+# El correo es obligatorio porque es con el que el productor inicia sesión.
 CAMPOS_PRODUCTOR = {
     "nombre": validar_texto("nombre", 100),
+    "correo": validar_correo,
     "telefono": validar_opcional(validar_telefono),
-    "correo": validar_opcional(validar_correo),
+    "comunidad": validar_opcional(validar_texto("comunidad", 100)),
     "estatus": validar_estatus,
 }
-OBLIGATORIOS_PRODUCTOR = ("nombre",)
+OBLIGATORIOS_PRODUCTOR = ("nombre", "correo")
 
 CAMPOS_PARCELA = {
     "id_productor": validar_id_productor,
