@@ -1,0 +1,32 @@
+# Bases de datos locales para desarrollar sin gastar en AWS.
+#   docker compose up -d     levanta Postgres (en lugar de RDS) y DynamoDB Local
+#   docker compose down      las apaga
+#   docker compose down -v   las apaga y borra los datos de Postgres (vuelve a correr los scripts SQL)
+# Las contraseñas se leen del archivo .env (copia de .env.example).
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: inagri-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-inagri}
+      POSTGRES_USER: ${DB_ADMIN_USER:-inagri_admin}
+      POSTGRES_PASSWORD: ${DB_ADMIN_PASSWORD:?Falta DB_ADMIN_PASSWORD en .env}
+      DB_APP_PASSWORD: ${DB_PASSWORD:?Falta DB_PASSWORD en .env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql:/sql:ro
+      - ./docker/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh:ro
+      - datos-postgres:/var/lib/postgresql/data
+
+  dynamodb:
+    image: amazon/dynamodb-local
+    container_name: inagri-dynamodb
+    # -inMemory: los datos se pierden al apagar el contenedor. Se vuelven a cargar con los scripts.
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
+    ports:
+      - "8000:8000"
+
+volumes:
+  datos-postgres:
