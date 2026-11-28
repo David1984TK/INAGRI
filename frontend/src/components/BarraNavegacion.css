@@ -1,0 +1,224 @@
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 16px 16px 0;
+}
+
+.barra-pildora {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 8px 10px 8px 22px;
+  border-radius: 999px;
+  max-width: 100%;
+}
+
+.barra-logo {
+  display: flex;
+  flex: none;
+}
+
+.barra-logo img {
+  height: 32px;
+  width: auto;
+}
+
+.barra-pestanas {
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(214, 228, 219, 0.6);
+}
+
+.barra-pestana {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto-suave);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.barra-pestana:hover {
+  color: var(--texto);
+}
+
+.barra-pestana.active {
+  background: #fff;
+  color: var(--verde-campo);
+  box-shadow: 0 2px 8px -2px rgba(15, 61, 34, 0.18);
+}
+
+.barra-usuario {
+  position: relative;
+}
+
+.barra-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 14px 0 5px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto-titulo);
+  cursor: pointer;
+}
+
+.barra-chip .bi {
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+.barra-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--verde-campo);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.barra-nombre {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra-menu {
+  top: calc(100% + 10px);
+  right: -12px;
+  width: 200px;
+}
+
+.barra-menu-cabecera {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px 6px;
+}
+
+.barra-menu-cabecera strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--texto-titulo);
+}
+
+.barra-menu-cabecera span {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+
+/* Menús desplegables (usuario y ⋮ de la parcela) */
+.menu {
+  position: absolute;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  animation: menu-aparecer 0.14s ease-out;
+}
+
+.menu-separador {
+  margin: 4px 4px;
+  border: none;
+  border-top: 1px solid var(--borde);
+  opacity: 1;
+}
+
+.menu-opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto-titulo);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-opcion:hover,
+.menu-opcion:focus-visible {
+  background: var(--verde-tinte);
+  color: var(--texto-titulo);
+}
+
+.menu-opcion .bi {
+  font-size: 15px;
+  color: var(--texto-suave);
+}
+
+.menu-opcion-peligro,
+.menu-opcion-peligro .bi {
+  color: var(--naranja);
+}
+
+.menu-opcion-peligro:hover,
+.menu-opcion-peligro:focus-visible {
+  background: var(--naranja-fondo);
+  color: var(--naranja);
+}
+
+@keyframes menu-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 720px) {
+  .barra-pildora {
+    gap: 8px;
+    padding-left: 12px;
+  }
+
+  .barra-logo img {
+    height: 26px;
+  }
+
+  .barra-pestana {
+    padding: 0 10px;
+  }
+
+  .barra-pestana .bi,
+  .barra-nombre {
+    display: none;
+  }
+
+  .barra-chip {
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .barra-logo {
+    display: none;
+  }
+}

@@ -1,3 +1,22 @@
+/* Estilos de Iniciar sesión y Recuperar contraseña, limitados a .login-page
+   para que no choquen con los del resto de la app (.campo, .subtitulo, .grafica). */
+.login-page,
+.login-page *,
+.login-page *::before,
+.login-page *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  --verde-fondo: #9be3b4f2;
+  --verde-boton: #16803c;
+  --texto: #14281d;
+  --texto-suave: #5b6b62;
+  color: var(--texto);
+}
+
 /* ---------- Fondo ---------- */
 .login-page {
   position: relative;
@@ -17,7 +36,7 @@
 }
 
 /* ---------- Tarjeta de login (efecto vidrio) ---------- */
-.login-card {
+.login-page .login-card {
   position: relative;
   z-index: 2;
   width: 100%;
@@ -33,27 +52,27 @@
   flex-direction: column;
 }
 
-.login-logo {
+.login-page .login-logo {
   width: 220px;
   align-self: center;
   margin-bottom: 28px;
 }
 
-.login-card h1 {
+.login-page .login-card h1 {
   text-align: center;
   font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
-.subtitulo {
+.login-page .subtitulo {
   text-align: center;
   color: var(--texto-suave);
   margin: 10px 0 34px;
   font-size: 1rem;
 }
 
-.login-card label {
+.login-page .login-card label {
   font-size: 0.92rem;
   font-weight: 600;
   color: #3d4b43;
@@ -61,7 +80,7 @@
 }
 
 /* ---------- Campos ---------- */
-.campo {
+.login-page .campo {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -74,17 +93,17 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.campo:focus-within {
+.login-page .campo:focus-within {
   border-color: var(--verde-boton);
   box-shadow: 0 0 0 4px rgba(22, 128, 60, 0.15);
 }
 
-.campo-icono {
+.login-page .campo-icono {
   display: flex;
   color: #4a5750;
 }
 
-.campo input {
+.login-page .campo input {
   flex: 1;
   border: none;
   outline: none;
@@ -94,11 +113,11 @@
   color: var(--texto);
 }
 
-.campo input::placeholder {
+.login-page .campo input::placeholder {
   color: #7b8780;
 }
 
-.ojo {
+.login-page .ojo {
   display: flex;
   border: none;
   background: none;
@@ -106,7 +125,7 @@
   color: #4a5750;
 }
 
-.olvido {
+.login-page .olvido {
   align-self: flex-end;
   margin-top: -10px;
   font-size: 0.92rem;
@@ -115,12 +134,12 @@
   text-decoration: none;
 }
 
-.olvido:hover {
+.login-page .olvido:hover {
   text-decoration: underline;
 }
 
 /* ---------- Botón ---------- */
-.btn-login {
+.login-page .btn-login {
   margin-top: 28px;
   height: 64px;
   display: flex;
@@ -139,17 +158,17 @@
   transition: transform 0.15s, filter 0.2s;
 }
 
-.btn-login:hover {
+.login-page .btn-login:hover {
   filter: brightness(1.08);
   transform: translateY(-2px);
 }
 
-.btn-login:active {
+.login-page .btn-login:active {
   transform: translateY(0);
 }
 
 /* ---------- Tarjetas decorativas ---------- */
-.widget {
+.login-page .widget {
   position: absolute;
   z-index: 1;
   background: rgba(240, 247, 243, 0.6);
@@ -161,7 +180,7 @@
   padding: 20px 22px;
 }
 
-.widget-cabecera {
+.login-page .widget-cabecera {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -170,7 +189,7 @@
   color: #4a5750;
 }
 
-.widget-icono {
+.login-page .widget-icono {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -181,42 +200,42 @@
   color: var(--verde-boton);
 }
 
-.widget-valor {
+.login-page .widget-valor {
   font-size: 2.4rem;
   font-weight: 800;
   margin: 12px 0 6px;
 }
 
-.widget-valor small {
+.login-page .widget-valor small {
   font-size: 1.1rem;
   font-weight: 700;
 }
 
-.grafica {
+.login-page .grafica {
   width: 100%;
   height: 50px;
 }
 
-.widget-humedad {
+.login-page .widget-humedad {
   top: 21%;
   left: 15%;
   width: 240px;
 }
 
-.widget-temperatura {
+.login-page .widget-temperatura {
   top: 26%;
   right: 15%;
   width: 225px;
 }
 
-.widget-sensores {
+.login-page .widget-sensores {
   bottom: 18%;
   left: 11%;
   width: 335px;
   filter: blur(1.2px);
 }
 
-.sensores-fila {
+.login-page .sensores-fila {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,28 +244,28 @@
   color: #4a5750;
 }
 
-.sensores-fila strong {
+.login-page .sensores-fila strong {
   font-size: 1.2rem;
   color: var(--texto);
 }
 
-.barras {
+.login-page .barras {
   display: flex;
   gap: 6px;
 }
 
-.barras span {
+.login-page .barras span {
   flex: 1;
   height: 8px;
   border-radius: 99px;
   background: #d9e6de;
 }
 
-.barras span.activa {
+.login-page .barras span.activa {
   background: var(--verde-boton);
 }
 
-.widget-parcela {
+.login-page .widget-parcela {
   bottom: 21%;
   right: 12%;
   display: flex;
@@ -256,7 +275,7 @@
   filter: blur(1.2px);
 }
 
-.parcela-check {
+.login-page .parcela-check {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -266,30 +285,30 @@
   background: var(--verde-boton);
 }
 
-.widget-parcela strong {
+.login-page .widget-parcela strong {
   font-size: 1rem;
 }
 
-.widget-parcela p {
+.login-page .widget-parcela p {
   font-size: 0.85rem;
   color: var(--texto-suave);
 }
 
 /* ---------- Responsivo ---------- */
 @media (max-width: 1100px) {
-  .widget {
+  .login-page .widget {
     display: none;
   }
 }
 
 @media (max-width: 520px) {
-  .login-card {
+  .login-page .login-card {
     padding: 32px 22px 36px;
     border-radius: 32px;
   }
 }
 /* ---------- Recuperar contraseña ---------- */
-.olvido {
+.login-page .olvido {
   background: none;
   border: none;
   cursor: pointer;
@@ -297,11 +316,11 @@
   padding: 0;
 }
 
-.login-card h1 + .subtitulo {
+.login-page .login-card h1 + .subtitulo {
   margin-top: 12px;
 }
 
-.volver {
+.login-page .volver {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -316,18 +335,18 @@
   color: var(--verde-boton);
 }
 
-.volver:hover {
+.login-page .volver:hover {
   text-decoration: underline;
 }
 
-.exito {
+.login-page .exito {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.exito-icono {
+.login-page .exito-icono {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,11 +358,11 @@
   box-shadow: 0 12px 24px rgba(22, 128, 60, 0.3);
 }
 
-.exito .subtitulo {
+.login-page .exito .subtitulo {
   margin-bottom: 10px;
 }
 
-.reenviar {
+.login-page .reenviar {
   background: none;
   border: none;
   cursor: pointer;
@@ -353,6 +372,6 @@
   color: var(--texto-suave);
 }
 
-.reenviar:hover {
+.login-page .reenviar:hover {
   color: var(--verde-boton);
 }
