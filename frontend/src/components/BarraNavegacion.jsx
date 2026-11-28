@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo-inagri.svg'
 import { useCerrarAlSalir } from '../hooks/useCerrarAlSalir'
 import { cerrarSesion, iniciales, obtenerUsuario } from '../services/sesion'
@@ -8,6 +8,7 @@ import './BarraNavegacion.css'
 const ROLES = { productor: 'Productor', administrador: 'Administrador' }
 
 export default function BarraNavegacion() {
+  const navigate = useNavigate()
   const usuario = obtenerUsuario()
   const nombre = usuario?.nombre ?? 'Usuario'
   const [menuAbierto, setMenuAbierto] = useState(false)
@@ -65,7 +66,7 @@ export default function BarraNavegacion() {
                 role="menuitem"
                 onClick={() => {
                   cerrarSesion()
-                  cerrarMenu()
+                  navigate('/login')
                 }}
               >
                 <i className="bi bi-box-arrow-right" aria-hidden="true" />

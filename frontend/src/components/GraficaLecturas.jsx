@@ -29,7 +29,7 @@ export default function GraficaLecturas({ puntos, desde, hasta, etiquetasX, unid
   const area = `${linea} L${x(ultimo.t).toFixed(1)},${ALTO} L${x(primero.t).toFixed(1)},${ALTO} Z`
 
   return (
-    <div className={`grafica grafica-${tono}`}>
+    <div className={`grafica-lecturas grafica-${tono}`}>
       <div className="grafica-eje-y" aria-hidden="true">
         {[...marcas].reverse().map((marca) => (
           <span key={marca}>

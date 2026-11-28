@@ -1,6 +1,6 @@
 export default function Campo({ etiqueta, icono, unidad, ayuda, error, children }) {
   return (
-    <label className="campo">
+    <label className="campo-formulario">
       <span className="campo-etiqueta">{etiqueta}</span>
       <span className={`campo-control ${error ? 'con-error' : ''}`}>
         {icono && <i className={`bi ${icono}`} aria-hidden="true" />}

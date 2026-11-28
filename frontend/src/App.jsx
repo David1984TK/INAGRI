@@ -2,12 +2,15 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import ProveedorAvisos from './components/ProveedorAvisos'
 import DetalleParcela from './pages/DetalleParcela'
+import IniciarSesion from './pages/IniciarSesion'
 import MisParcelas from './pages/MisParcelas'
 
 function App() {
   return (
     <ProveedorAvisos>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<IniciarSesion />} />
         <Route element={<Layout />}>
           <Route path="/parcelas" element={<MisParcelas />} />
           <Route path="/parcelas/:id" element={<DetalleParcela />} />

@@ -1,0 +1,377 @@
+/* Estilos de Iniciar sesión y Recuperar contraseña, limitados a .login-page
+   para que no choquen con los del resto de la app (.campo, .subtitulo, .grafica). */
+.login-page,
+.login-page *,
+.login-page *::before,
+.login-page *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  --verde-fondo: #9be3b4f2;
+  --verde-boton: #16803c;
+  --texto: #14281d;
+  --texto-suave: #5b6b62;
+  color: var(--texto);
+}
+
+/* ---------- Fondo ---------- */
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  background-color: var(--verde-fondo);
+  background-image:
+    radial-gradient(ellipse 30% 55% at 50% 5%, #ffffff 0%, transparent 70%),
+    radial-gradient(ellipse 28% 40% at 8% 20%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 35% at 22% 95%, rgba(130, 225, 170, 0.9) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 40% at 85% 55%, rgba(255, 255, 255, 0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 35% at 70% 100%, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+}
+
+/* ---------- Tarjeta de login (efecto vidrio) ---------- */
+.login-page .login-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 570px;
+  padding: 48px 52px 52px;
+  border-radius: 48px;
+  background: rgba(240, 245, 242, 0.75);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 25px 60px rgba(22, 90, 50, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.login-page .login-logo {
+  width: 220px;
+  align-self: center;
+  margin-bottom: 28px;
+}
+
+.login-page .login-card h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.login-page .subtitulo {
+  text-align: center;
+  color: var(--texto-suave);
+  margin: 10px 0 34px;
+  font-size: 1rem;
+}
+
+.login-page .login-card label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #3d4b43;
+  margin-bottom: 8px;
+}
+
+/* ---------- Campos ---------- */
+.login-page .campo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 62px;
+  padding: 0 18px;
+  margin-bottom: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e2e8e4;
+  border-radius: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-page .campo:focus-within {
+  border-color: var(--verde-boton);
+  box-shadow: 0 0 0 4px rgba(22, 128, 60, 0.15);
+}
+
+.login-page .campo-icono {
+  display: flex;
+  color: #4a5750;
+}
+
+.login-page .campo input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: var(--texto);
+}
+
+.login-page .campo input::placeholder {
+  color: #7b8780;
+}
+
+.login-page .ojo {
+  display: flex;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #4a5750;
+}
+
+.login-page .olvido {
+  align-self: flex-end;
+  margin-top: -10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--verde-boton);
+  text-decoration: none;
+}
+
+.login-page .olvido:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Botón ---------- */
+.login-page .btn-login {
+  margin-top: 28px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: none;
+  border-radius: 20px;
+  background: var(--verde-boton);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(22, 128, 60, 0.3);
+  transition: transform 0.15s, filter 0.2s;
+}
+
+.login-page .btn-login:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.login-page .btn-login:active {
+  transform: translateY(0);
+}
+
+/* ---------- Tarjetas decorativas ---------- */
+.login-page .widget {
+  position: absolute;
+  z-index: 1;
+  background: rgba(240, 247, 243, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 12px 30px rgba(22, 90, 50, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px 22px;
+}
+
+.login-page .widget-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5750;
+}
+
+.login-page .widget-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(155, 227, 180, 0.6);
+  color: var(--verde-boton);
+}
+
+.login-page .widget-valor {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin: 12px 0 6px;
+}
+
+.login-page .widget-valor small {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.login-page .grafica {
+  width: 100%;
+  height: 50px;
+}
+
+.login-page .widget-humedad {
+  top: 21%;
+  left: 15%;
+  width: 240px;
+}
+
+.login-page .widget-temperatura {
+  top: 26%;
+  right: 15%;
+  width: 225px;
+}
+
+.login-page .widget-sensores {
+  bottom: 18%;
+  left: 11%;
+  width: 335px;
+  filter: blur(1.2px);
+}
+
+.login-page .sensores-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #4a5750;
+}
+
+.login-page .sensores-fila strong {
+  font-size: 1.2rem;
+  color: var(--texto);
+}
+
+.login-page .barras {
+  display: flex;
+  gap: 6px;
+}
+
+.login-page .barras span {
+  flex: 1;
+  height: 8px;
+  border-radius: 99px;
+  background: #d9e6de;
+}
+
+.login-page .barras span.activa {
+  background: var(--verde-boton);
+}
+
+.login-page .widget-parcela {
+  bottom: 21%;
+  right: 12%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px 14px 16px;
+  filter: blur(1.2px);
+}
+
+.login-page .parcela-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--verde-boton);
+}
+
+.login-page .widget-parcela strong {
+  font-size: 1rem;
+}
+
+.login-page .widget-parcela p {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1100px) {
+  .login-page .widget {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-page .login-card {
+    padding: 32px 22px 36px;
+    border-radius: 32px;
+  }
+}
+/* ---------- Recuperar contraseña ---------- */
+.login-page .olvido {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
+.login-page .login-card h1 + .subtitulo {
+  margin-top: 12px;
+}
+
+.login-page .volver {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 26px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--verde-boton);
+}
+
+.login-page .volver:hover {
+  text-decoration: underline;
+}
+
+.login-page .exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.login-page .exito-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background: var(--verde-boton);
+  box-shadow: 0 12px 24px rgba(22, 128, 60, 0.3);
+}
+
+.login-page .exito .subtitulo {
+  margin-bottom: 10px;
+}
+
+.login-page .reenviar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+.login-page .reenviar:hover {
+  color: var(--verde-boton);
+}

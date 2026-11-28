@@ -217,7 +217,7 @@
 }
 
 /* Gráfica */
-.grafica {
+.grafica-lecturas {
   display: grid;
   grid-template-columns: 40px 1fr;
   grid-template-rows: 110px auto;

@@ -177,7 +177,7 @@ button {
 }
 
 /* Formularios */
-.campo {
+.campo-formulario {
   display: flex;
   flex-direction: column;
   gap: 6px;
